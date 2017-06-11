@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bignerdranch.android.rxjavasampelswlh.BaseFragment;
 import com.bignerdranch.android.rxjavasampelswlh.R;
 
 import butterknife.Bind;
@@ -18,7 +19,7 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2017/6/10/010.
  */
 
-public class ElementaryFragment extends Fragment {
+public class ElementaryFragment extends BaseFragment {
     @Bind(R.id.recycler_view_elementary) RecyclerView mRecyclerView;
     @Bind(R.id.swipe_refresh_layout) SwipeRefreshLayout mRefreshLayout;
 
@@ -29,5 +30,15 @@ public class ElementaryFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         return view;
+    }
+
+    @Override
+    protected int getDialogRes() {
+        return R.layout.dialog_elementary;
+    }
+
+    @Override
+    protected int getTitleRes() {
+        return R.string.title_elementary;
     }
 }
