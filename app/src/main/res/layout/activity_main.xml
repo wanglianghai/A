@@ -16,6 +16,7 @@
             android:id="@+id/tab_layout"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
+            android:layout_gravity="bottom"
             app:tabMode="scrollable" />
     </android.support.v4.view.ViewPager>
 
