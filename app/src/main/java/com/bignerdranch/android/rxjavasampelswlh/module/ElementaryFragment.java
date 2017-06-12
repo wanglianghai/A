@@ -40,6 +40,7 @@ import rx.schedulers.Schedulers;
 
 public class ElementaryFragment extends BaseFragment {
     private static final String TAG = "ElementaryFragment";
+    private ZbAdapter mZbAdapter;
     private ElementaryFragment mFragment;
 
     @Bind(R.id.recycler_view_elementary) RecyclerView mRecyclerView;
@@ -47,6 +48,7 @@ public class ElementaryFragment extends BaseFragment {
 
     public ElementaryFragment() {
         mFragment = this;
+        mZbAdapter = new ZbAdapter();
     }
 
     Observer<List<Zb>> mObserver = new Observer<List<Zb>>() {
@@ -64,7 +66,7 @@ public class ElementaryFragment extends BaseFragment {
 
         @Override
         public void onNext(List<Zb> zbs) {
-            mRecyclerView.setAdapter(new ZbAdapter(zbs));
+            mZbAdapter.setZbs(zbs);
         }
     };
 
@@ -92,6 +94,7 @@ public class ElementaryFragment extends BaseFragment {
 
         mRefreshLayout.setColorSchemeColors(Color.BLACK, Color.GRAY, Color.WHITE);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        mRecyclerView.setAdapter(mZbAdapter);
 
         return view;
     }
@@ -113,8 +116,9 @@ public class ElementaryFragment extends BaseFragment {
     private class ZbAdapter extends RecyclerView.Adapter<ZbViewHolder> {
         private List<Zb> mZbs;
 
-        public ZbAdapter(List<Zb> zbs) {
+        public void setZbs(List<Zb> zbs) {
             mZbs = zbs;
+            notifyDataSetChanged();
         }
 
         @Override
@@ -131,7 +135,7 @@ public class ElementaryFragment extends BaseFragment {
 
         @Override
         public int getItemCount() {
-            return mZbs.size();
+            return mZbs == null ? 0 : mZbs.size();
         }
     }
     @Override

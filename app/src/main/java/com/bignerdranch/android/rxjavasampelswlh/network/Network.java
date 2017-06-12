@@ -20,14 +20,16 @@ public class Network {
     private static ZbApi mZbApi;
 
     public static ZbApi zbApi() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .client(sOkHttpClient)
-                .baseUrl("http://www.zhuangbi.info/")
-                .addConverterFactory(gsonConvertFactory)
-                .addCallAdapterFactory(rxJavaCallAdapterFactory)
-                .build();
+        if (mZbApi == null) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .client(sOkHttpClient)
+                    .baseUrl("http://www.zhuangbi.info/")
+                    .addConverterFactory(gsonConvertFactory)
+                    .addCallAdapterFactory(rxJavaCallAdapterFactory)
+                    .build();
 
-        mZbApi = retrofit.create(ZbApi.class);
+            mZbApi = retrofit.create(ZbApi.class);
+        }
 
         return mZbApi;
     }
