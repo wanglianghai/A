@@ -5,18 +5,22 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bignerdranch.android.rxjavasampelswlh.BaseFragment;
 import com.bignerdranch.android.rxjavasampelswlh.R;
 import com.bignerdranch.android.rxjavasampelswlh.model.Zb;
 import com.bignerdranch.android.rxjavasampelswlh.network.Network;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -36,9 +40,14 @@ import rx.schedulers.Schedulers;
 
 public class ElementaryFragment extends BaseFragment {
     private static final String TAG = "ElementaryFragment";
+    private ElementaryFragment mFragment;
 
     @Bind(R.id.recycler_view_elementary) RecyclerView mRecyclerView;
     @Bind(R.id.swipe_refresh_layout) SwipeRefreshLayout mRefreshLayout;
+
+    public ElementaryFragment() {
+        mFragment = this;
+    }
 
     Observer<List<Zb>> mObserver = new Observer<List<Zb>>() {
 
@@ -55,7 +64,7 @@ public class ElementaryFragment extends BaseFragment {
 
         @Override
         public void onNext(List<Zb> zbs) {
-            Log.i(TAG, "onNext: size:" + zbs.size());
+            mRecyclerView.setAdapter(new ZbAdapter(zbs));
         }
     };
 
@@ -82,10 +91,49 @@ public class ElementaryFragment extends BaseFragment {
         ButterKnife.bind(this, view);
 
         mRefreshLayout.setColorSchemeColors(Color.BLACK, Color.GRAY, Color.WHITE);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
         return view;
     }
 
+    class ZbViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.item_image) ImageView mImageView;
+        @Bind(R.id.item_text) TextView mTextView;
+        public ZbViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+
+        public void bindItem(Zb zb) {
+            Glide.with(mFragment).load(zb.image_url).into(mImageView);
+            mTextView.setText(zb.description);
+        }
+    }
+
+    private class ZbAdapter extends RecyclerView.Adapter<ZbViewHolder> {
+        private List<Zb> mZbs;
+
+        public ZbAdapter(List<Zb> zbs) {
+            mZbs = zbs;
+        }
+
+        @Override
+        public ZbViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View thisItemView = getActivity().getLayoutInflater().inflate(R.layout.zb_item, parent, false);
+            return new ZbViewHolder(thisItemView);
+        }
+
+        @Override
+        public void onBindViewHolder(ZbViewHolder holder, int position) {
+            Zb zb = mZbs.get(position);
+            holder.bindItem(zb);
+        }
+
+        @Override
+        public int getItemCount() {
+            return mZbs.size();
+        }
+    }
     @Override
     protected int getDialogRes() {
         return R.layout.dialog_elementary;
