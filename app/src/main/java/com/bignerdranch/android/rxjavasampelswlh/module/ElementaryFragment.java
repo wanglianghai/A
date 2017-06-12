@@ -66,6 +66,7 @@ public class ElementaryFragment extends BaseFragment {
 
         @Override
         public void onNext(List<Zb> zbs) {
+            mRefreshLayout.setRefreshing(false);
             mZbAdapter.setZbs(zbs);
         }
     };
@@ -73,6 +74,8 @@ public class ElementaryFragment extends BaseFragment {
     @OnCheckedChanged({R.id.search_Rb_110, R.id.search_Rb_cute, R.id.search_Rb_myself, R.id.search_Rb_zb})
     void onTagChanged(RadioButton searchRb, boolean lastClicked) {
         if (lastClicked) {
+            mZbAdapter.setZbs(null);
+            mRefreshLayout.setRefreshing(true);
             unSubscription();
             search(searchRb.getText().toString());
         }
@@ -93,6 +96,7 @@ public class ElementaryFragment extends BaseFragment {
         ButterKnife.bind(this, view);
 
         mRefreshLayout.setColorSchemeColors(Color.BLACK, Color.GRAY, Color.WHITE);
+        mRefreshLayout.setEnabled(false);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         mRecyclerView.setAdapter(mZbAdapter);
 
