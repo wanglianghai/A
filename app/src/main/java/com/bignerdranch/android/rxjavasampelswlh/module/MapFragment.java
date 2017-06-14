@@ -14,7 +14,11 @@ import android.widget.TextView;
 import com.bignerdranch.android.rxjavasampelswlh.BaseFragment;
 import com.bignerdranch.android.rxjavasampelswlh.R;
 import com.bignerdranch.android.rxjavasampelswlh.model.GankBeautyResult;
+import com.bignerdranch.android.rxjavasampelswlh.model.Item;
 import com.bignerdranch.android.rxjavasampelswlh.network.Network;
+import com.bignerdranch.android.rxjavasampelswlh.util.GankBeautyResultMap;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,7 +40,7 @@ public class MapFragment extends BaseFragment {
     @Bind(R.id.fragment_map_recycler_view) RecyclerView mRecyclerView;
     @Bind(R.id.map_swipe_refresh) SwipeRefreshLayout mRefreshLayout;
 
-    private Observer<GankBeautyResult> mObserver = new Observer<GankBeautyResult>() {
+    private Observer<List<Item>> mObserver = new Observer<List<Item>>() {
         @Override
         public void onCompleted() {
 
@@ -48,8 +52,8 @@ public class MapFragment extends BaseFragment {
         }
 
         @Override
-        public void onNext(GankBeautyResult gankBeautyResult) {
-            Log.i(TAG, "onNext: json = " + gankBeautyResult.mBeauties.size());
+        public void onNext(List<Item> gankBeautyResults) {
+            Log.i(TAG, "onNext: json = " + gankBeautyResults.size());
         }
     };
 
@@ -69,6 +73,7 @@ public class MapFragment extends BaseFragment {
         unSubscription();
         mSubscription = Network.getGankApi()
                 .getBeauty(10, mPages)
+                .map(GankBeautyResultMap.getInstance())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mObserver);
