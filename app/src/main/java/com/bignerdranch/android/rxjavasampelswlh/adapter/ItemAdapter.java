@@ -19,6 +19,12 @@ import java.util.List;
 public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
     private List<Item> mItems;
 
+    public ItemAdapter() {}
+
+    public ItemAdapter(List<Item> items) {
+        mItems = items;
+    }
+
     @Override
     public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.map_item, parent, false);
@@ -37,6 +43,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
 
     public void setItems(List<Item> items) {
         mItems = items;
-        notifyDataSetChanged();
+    //    notifyDataSetChanged();
     }
 }

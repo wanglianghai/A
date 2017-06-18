@@ -61,6 +61,7 @@ public class MapFragment extends BaseFragment {
         public void onNext(List<Item> gankBeautyResults) {
             mRefreshLayout.setRefreshing(false);
             mAdapter.setItems(gankBeautyResults);
+            mRecyclerView.setAdapter(mAdapter);
         }
     };
 
@@ -99,7 +100,6 @@ public class MapFragment extends BaseFragment {
     }
 
     void updateButton() {
-        mAdapter.setItems(null);
         mRefreshLayout.setRefreshing(true);
         mPageTextView.setText(getString(R.string.page_number, mPages + ""));
         if (mPages == 1) {

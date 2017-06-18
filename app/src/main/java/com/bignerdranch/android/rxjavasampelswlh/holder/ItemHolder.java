@@ -1,6 +1,7 @@
 package com.bignerdranch.android.rxjavasampelswlh.holder;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,10 +18,8 @@ import butterknife.ButterKnife;
  */
 
 public class ItemHolder extends RecyclerView.ViewHolder {
-    @Bind(R.id.map_item_image)
-    ImageView mImageView;
-    @Bind(R.id.map_item_text)
-    TextView mTextView;
+    @Bind(R.id.map_item_image) ImageView mImageView;
+    @Bind(R.id.map_item_text) TextView mTextView;
 
     public ItemHolder(View itemView) {
         super(itemView);
