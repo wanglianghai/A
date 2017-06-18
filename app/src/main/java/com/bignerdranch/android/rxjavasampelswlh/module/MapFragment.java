@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.bignerdranch.android.rxjavasampelswlh.BaseFragment;
 import com.bignerdranch.android.rxjavasampelswlh.R;
+import com.bignerdranch.android.rxjavasampelswlh.adapter.ItemAdapter;
 import com.bignerdranch.android.rxjavasampelswlh.model.GankBeautyResult;
 import com.bignerdranch.android.rxjavasampelswlh.model.Item;
 import com.bignerdranch.android.rxjavasampelswlh.network.Network;
@@ -39,7 +40,7 @@ public class MapFragment extends BaseFragment {
     private static final String TAG = "MapFragment";
     private int mPages = 2;
 
-    private MapAdapter mAdapter = new MapAdapter();
+    private ItemAdapter mAdapter = new ItemAdapter();
     @Bind(R.id.map_page) TextView mPageTextView;
     @Bind(R.id.button_previous) Button mPreviousButton;
     @Bind(R.id.fragment_map_recycler_view) RecyclerView mRecyclerView;
@@ -118,45 +119,5 @@ public class MapFragment extends BaseFragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mObserver);
-    }
-
-    class MapHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.map_item_image) ImageView mImageView;
-        @Bind(R.id.map_item_text) TextView mTextView;
-
-        public MapHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-
-        public void bindItem(Item item) {
-            Glide.with(getActivity()).load(item.mUrl).into(mImageView);
-            mTextView.setText(item.mDate);
-        }
-    }
-
-    private class MapAdapter extends RecyclerView.Adapter<MapHolder> {
-        private List<Item> mItems;
-
-        @Override
-        public MapHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = getActivity().getLayoutInflater().inflate(R.layout.map_item, parent, false);
-            return new MapHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(MapHolder holder, int position) {
-            holder.bindItem(mItems.get(position));
-        }
-
-        @Override
-        public int getItemCount() {
-            return mItems == null ? 0 : mItems.size();
-        }
-
-        public void setItems(List<Item> items) {
-            mItems = items;
-            notifyDataSetChanged();
-        }
     }
 }
